@@ -1,0 +1,1256 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKD Constipation Management Protocol</title>
+<style>
+:root {
+--primary: #1a5276;
+--primary-light: #2980b9;
+--accent: #e67e22;
+--success: #27ae60;
+--danger: #c0392b;
+--warning: #f39c12;
+--bg: #f4f6f7;
+--card: #ffffff;
+--text: #2c3e50;
+--text-light: #7f8c8d;
+--border: #dce1e3;
+--radius: 10px;
+--shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+body {
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+background: var(--bg);
+color: var(--text);
+line-height: 1.6;
+min-height: 100vh;
+}
+
+.app-header {
+background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+color: white;
+padding: 1.5rem 1rem 1rem;
+text-align: center;
+position: sticky;
+top: 0;
+z-index: 100;
+box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.app-header h1 {
+font-size: 1.3rem;
+font-weight: 700;
+letter-spacing: -0.3px;
+}
+
+.app-header p {
+font-size: 0.8rem;
+opacity: 0.85;
+margin-top: 0.25rem;
+}
+
+.container {
+max-width: 900px;
+margin: 0 auto;
+padding: 1rem;
+}
+
+/* Progress bar */
+.progress-bar {
+display: flex;
+gap: 0.25rem;
+padding: 0.75rem 1rem;
+background: var(--card);
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+margin-bottom: 1rem;
+overflow-x: auto;
+}
+
+.progress-step {
+flex: 1;
+min-width: 60px;
+text-align: center;
+font-size: 0.65rem;
+color: var(--text-light);
+padding: 0.4rem 0.2rem;
+border-radius: 6px;
+transition: all 0.3s;
+cursor: pointer;
+white-space: nowrap;
+}
+
+.progress-step.active {
+background: var(--primary);
+color: white;
+font-weight: 600;
+}
+
+.progress-step.completed {
+background: #d5f5e3;
+color: var(--success);
+}
+
+/* Cards */
+.card {
+background: var(--card);
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+padding: 1.25rem;
+margin-bottom: 1rem;
+animation: fadeIn 0.35s ease;
+}
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(8px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.card h2 {
+font-size: 1.1rem;
+color: var(--primary);
+margin-bottom: 0.75rem;
+padding-bottom: 0.5rem;
+border-bottom: 2px solid var(--border);
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+
+.card h3 {
+font-size: 0.95rem;
+color: var(--primary);
+margin: 1rem 0 0.5rem;
+}
+
+.card p, .card li {
+font-size: 0.9rem;
+color: var(--text);
+}
+
+.card ul, .card ol {
+padding-left: 1.3rem;
+margin: 0.4rem 0;
+}
+
+.card li {
+margin-bottom: 0.35rem;
+}
+
+/* Form elements */
+.form-group {
+margin-bottom: 1rem;
+}
+
+.form-group label {
+display: block;
+font-weight: 600;
+font-size: 0.85rem;
+margin-bottom: 0.35rem;
+color: var(--text);
+}
+
+.form-group select,
+.form-group input[type="number"],
+.form-group input[type="text"] {
+width: 100%;
+padding: 0.6rem 0.75rem;
+border: 2px solid var(--border);
+border-radius: 8px;
+font-size: 0.9rem;
+transition: border-color 0.2s;
+background: white;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+outline: none;
+border-color: var(--primary-light);
+}
+
+.radio-group {
+display: flex;
+flex-wrap: wrap;
+gap: 0.5rem;
+}
+
+.radio-option {
+flex: 1;
+min-width: 100px;
+position: relative;
+}
+
+.radio-option input[type="radio"] {
+position: absolute;
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+.radio-option label {
+display: block;
+padding: 0.6rem 0.5rem;
+text-align: center;
+border: 2px solid var(--border);
+border-radius: 8px;
+font-size: 0.8rem;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.2s;
+background: white;
+}
+
+.radio-option input[type="radio"]:checked + label {
+border-color: var(--primary);
+background: #eaf2f8;
+color: var(--primary);
+font-weight: 700;
+}
+
+.checkbox-group {
+display: flex;
+flex-direction: column;
+gap: 0.4rem;
+}
+
+.checkbox-item {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+font-size: 0.85rem;
+}
+
+.checkbox-item input[type="checkbox"] {
+width: 18px;
+height: 18px;
+accent-color: var(--primary);
+cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 0.4rem;
+padding: 0.7rem 1.4rem;
+border: none;
+border-radius: 8px;
+font-size: 0.9rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+width: 100%;
+}
+
+.btn-primary {
+background: var(--primary);
+color: white;
+}
+
+.btn-primary:hover {
+background: var(--primary-light);
+transform: translateY(-1px);
+box-shadow: 0 4px 12px rgba(26,82,118,0.3);
+}
+
+.btn-secondary {
+background: white;
+color: var(--primary);
+border: 2px solid var(--primary);
+}
+
+.btn-secondary:hover {
+background: #eaf2f8;
+}
+
+.btn-group {
+display: flex;
+gap: 0.5rem;
+margin-top: 1rem;
+}
+
+.btn-group .btn {
+flex: 1;
+}
+
+/* Alert boxes */
+.alert {
+padding: 0.75rem 1rem;
+border-radius: 8px;
+font-size: 0.85rem;
+margin: 0.75rem 0;
+border-left: 4px solid;
+}
+
+.alert-danger {
+background: #fdedec;
+border-color: var(--danger);
+color: #922b21;
+}
+
+.alert-warning {
+background: #fef9e7;
+border-color: var(--warning);
+color: #7d6608;
+}
+
+.alert-success {
+background: #eafaf1;
+border-color: var(--success);
+color: #1e8449;
+}
+
+.alert-info {
+background: #eaf2f8;
+border-color: var(--primary-light);
+color: #1a5276;
+}
+
+/* Drug table */
+.drug-table {
+width: 100%;
+border-collapse: collapse;
+font-size: 0.8rem;
+margin: 0.75rem 0;
+}
+
+.drug-table th {
+background: var(--primary);
+color: white;
+padding: 0.5rem 0.6rem;
+text-align: left;
+font-weight: 600;
+}
+
+.drug-table td {
+padding: 0.5rem 0.6rem;
+border-bottom: 1px solid var(--border);
+vertical-align: top;
+}
+
+.drug-table tr:nth-child(even) {
+background: #f8f9fa;
+}
+
+.drug-table .safe {
+color: var(--success);
+font-weight: 600;
+}
+
+.drug-table .caution {
+color: var(--warning);
+font-weight: 600;
+}
+
+.drug-table .avoid {
+color: var(--danger);
+font-weight: 600;
+}
+
+/* Badge */
+.badge {
+display: inline-block;
+padding: 0.15rem 0.5rem;
+border-radius: 20px;
+font-size: 0.7rem;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 0.3px;
+}
+
+.badge-safe {
+background: #d5f5e3;
+color: #1e8449;
+}
+
+.badge-caution {
+background: #fef9e7;
+color: #b7950b;
+}
+
+.badge-avoid {
+background: #fdedec;
+color: #922b21;
+}
+
+/* Hidden utility */
+.hidden {
+display: none !important;
+}
+
+/* Step content */
+.step-content {
+display: none;
+}
+
+.step-content.active {
+display: block;
+}
+
+/* Assessment summary */
+.summary-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 0.5rem;
+margin: 0.75rem 0;
+}
+
+.summary-item {
+background: #f8f9fa;
+padding: 0.5rem 0.75rem;
+border-radius: 6px;
+font-size: 0.8rem;
+}
+
+.summary-item strong {
+color: var(--primary);
+display: block;
+font-size: 0.7rem;
+text-transform: uppercase;
+letter-spacing: 0.3px;
+}
+
+/* Bristol scale visual */
+.bristol-scale {
+display: flex;
+gap: 0.3rem;
+margin: 0.75rem 0;
+flex-wrap: wrap;
+}
+
+.bristol-item {
+flex: 1;
+min-width: 55px;
+text-align: center;
+padding: 0.5rem 0.3rem;
+border-radius: 6px;
+font-size: 0.7rem;
+font-weight: 600;
+border: 2px solid var(--border);
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.bristol-item:hover {
+border-color: var(--primary-light);
+}
+
+.bristol-item.selected {
+border-color: var(--primary);
+background: #eaf2f8;
+color: var(--primary);
+}
+
+.bristol-item .type-num {
+font-size: 1.1rem;
+display: block;
+}
+
+.bristol-item .type-desc {
+font-size: 0.6rem;
+color: var(--text-light);
+font-weight: 400;
+}
+
+/* Collapsible */
+.collapsible-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+cursor: pointer;
+padding: 0.6rem 0;
+border-bottom: 1px solid var(--border);
+}
+
+.collapsible-header h3 {
+margin: 0;
+font-size: 0.9rem;
+}
+
+.collapsible-header .arrow {
+transition: transform 0.2s;
+font-size: 0.7rem;
+color: var(--text-light);
+}
+
+.collapsible-header.open .arrow {
+transform: rotate(90deg);
+}
+
+.collapsible-body {
+display: none;
+padding: 0.5rem 0;
+}
+
+.collapsible-body.open {
+display: block;
+}
+
+/* Footer */
+.app-footer {
+text-align: center;
+padding: 1.5rem 1rem;
+font-size: 0.7rem;
+color: var(--text-light);
+}
+
+/* Print styles */
+@media print {
+.app-header, .progress-bar, .btn, .app-footer { display: none; }
+.card { box-shadow: none; border: 1px solid var(--border); page-break-inside: avoid; }
+.step-content { display: block !important; }
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+.summary-grid { grid-template-columns: 1fr; }
+.bristol-item { min-width: 45px; font-size: 0.6rem; }
+.bristol-item .type-desc { display: none; }
+.drug-table { font-size: 0.7rem; }
+.drug-table th, .drug-table td { padding: 0.4rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+<h1>🫘 CKD Constipation Management</h1>
+<p>Interactive stepwise treatment protocol for chronic kidney disease</p>
+</header>
+
+<div class="container">
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar">
+<div class="progress-step active" data-step="0">1. Assess</div>
+<div class="progress-step" data-step="1">2. Non-Rx</div>
+<div class="progress-step" data-step="2">3. First-Line</div>
+<div class="progress-step" data-step="3">4. Second-Line</div>
+<div class="progress-step" data-step="4">5. Special</div>
+<div class="progress-step" data-step="5">6. Summary</div>
+</div>
+
+<!-- STEP 0: Patient Assessment -->
+<div class="step-content active" id="step0">
+<div class="card">
+<h2>📋 Patient Assessment</h2>
+<p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
+Enter patient details to generate a personalized treatment protocol.
+</p>
+
+<div class="form-group">
+<label>CKD Stage / Dialysis Status</label>
+<select id="ckdStage">
+<option value="">Select...</option>
+<option value="ckd3">CKD Stage 3 (eGFR 30–59)</option>
+<option value="ckd4">CKD Stage 4 (eGFR 15–29)</option>
+<option value="ckd5">CKD Stage 5 (eGFR &lt;15, not on dialysis)</option>
+<option value="hd">Hemodialysis (HD)</option>
+<option value="pd">Peritoneal Dialysis (PD)</option>
+<option value="transplant">Kidney Transplant Recipient</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Bristol Stool Form Scale — Current Stool Type</label>
+<div class="bristol-scale" id="bristolScale">
+<div class="bristol-item" data-bs="1">
+<span class="type-num">1</span>
+<span class="type-desc">Separate hard lumps</span>
+</div>
+<div class="bristol-item" data-bs="2">
+<span class="type-num">2</span>
+<span class="type-desc">Sausage-shaped, lumpy</span>
+</div>
+<div class="bristol-item" data-bs="3">
+<span class="type-num">3</span>
+<span class="type-desc">Like a sausage with cracks</span>
+</div>
+<div class="bristol-item" data-bs="4">
+<span class="type-num">4</span>
+<span class="type-desc">Smooth &amp; soft</span>
+</div>
+<div class="bristol-item" data-bs="5">
+<span class="type-num">5</span>
+<span class="type-desc">Soft blobs</span>
+</div>
+<div class="bristol-item" data-bs="6">
+<span class="type-num">6</span>
+<span class="type-desc">Fluffy, mushy</span>
+</div>
+<div class="bristol-item" data-bs="7">
+<span class="type-num">7</span>
+<span class="type-desc">Watery, no solids</span>
+</div>
+</div>
+<input type="hidden" id="bristolType" value="">
+</div>
+
+<div class="form-group">
+<label>Bowel Movement Frequency</label>
+<select id="bmFreq">
+<option value="">Select...</option>
+<option value="daily">Daily or every 1–2 days</option>
+<option value="every3">Every 3–4 days</option>
+<option value="every5">Every 5–6 days</option>
+<option value="less7">Less than once per week / no BM &gt;7 days</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Contributing Medications (check all that apply)</label>
+<div class="checkbox-group">
+<label class="checkbox-item"><input type="checkbox" value="phosphateBinders" class="med-check"> Phosphate binders</label>
+<label class="checkbox-item"><input type="checkbox" value="oralIron" class="med-check"> Oral iron</label>
+<label class="checkbox-item"><input type="checkbox" value="potassiumBinders" class="med-check"> Potassium binders</label>
+<label class="checkbox-item"><input type="checkbox" value="diuretics" class="med-check"> Diuretics</label>
+<label class="checkbox-item"><input type="checkbox" value="opioids" class="med-check"> Opioids</label>
+<label class="checkbox-item"><input type="checkbox" value="antihistamines" class="med-check"> Antihistamines</label>
+<label class="checkbox-item"><input type="checkbox" value="psychotropics" class="med-check"> Psychotropics</label>
+<label class="checkbox-item"><input type="checkbox" value="calciumChannel" class="med-check"> Calcium channel blockers</label>
+</div>
+</div>
+
+<div class="form-group">
+<label>Relevant Comorbidities</label>
+<div class="checkbox-group">
+<label class="checkbox-item"><input type="checkbox" value="hyperkalemia" class="comorb-check"> Hyperkalemia (current or recurrent)</label>
+<label class="checkbox-item"><input type="checkbox" value="hyperphosphatemia" class="comorb-check"> Hyperphosphatemia</label>
+<label class="checkbox-item"><input type="checkbox" value="fluidRestriction" class="comorb-check"> Fluid restriction</label>
+<label class="checkbox-item"><input type="checkbox" value="diabetes" class="comorb-check"> Diabetes mellitus</label>
+<label class="checkbox-item"><input type="checkbox" value="gastroparesis" class="comorb-check"> Gastroparesis</label>
+</div>
+</div>
+
+<button class="btn btn-primary" onclick="runAssessment()">
+▶ Generate Treatment Protocol
+</button>
+</div>
+</div>
+
+<!-- STEP 1: Non-Pharmacologic -->
+<div class="step-content" id="step1">
+<div class="card">
+<h2>🌿 Step 1 — Non-Pharmacologic Measures</h2>
+<div class="alert alert-info">
+<strong>Always start here.</strong> These measures are foundational and associated with lower mortality in CKD, though fluid and potassium restrictions may limit feasibility.
+</div>
+
+<h3>Dietary Fiber</h3>
+<ul>
+<li>Maximize tolerated dietary fiber <strong>within potassium and phosphorus restrictions</strong>.</li>
+<li>Goal: <strong>20–38 g/day</strong> if feasible.</li>
+<li>Low-potassium fiber sources: apples, berries, cabbage, cauliflower, green beans, carrots, whole wheat bread, barley.</li>
+<li>Add fiber <em>gradually</em> to avoid bloating and gas.</li>
+<li>Ground flaxseed (1–2 tbsp/day) can be added to yogurt or cereals.</li>
+<li><strong>Caution:</strong> Very large amounts of fiber are unsuitable for patients on fluid restriction.</li>
+</ul>
+
+<h3>Fluid Optimization</h3>
+<ul>
+<li>Optimize fluid intake <strong>within prescribed restriction limits</strong>.</li>
+<li>Patients on fluid restriction may not tolerate bulk-forming agents.</li>
+</ul>
+
+<h3>Physical Activity</h3>
+<ul>
+<li>Encourage physical activity — aim for <strong>30 minutes/day</strong> as tolerated.</li>
+<li>Walking, stretching, gardening, or stationary cycling all help promote bowel motility.</li>
+</ul>
+
+<h3>Bowel Habits</h3>
+<ul>
+<li>Go to the washroom as soon as the urge is felt.</li>
+<li>Establish a regular time for bowel movements every 1–2 days.</li>
+<li>Goal: <strong>Bowel movement every 1–2 days</strong>.</li>
+</ul>
+
+<h3>Medication Review</h3>
+<div class="alert alert-warning">
+Review and minimize constipating culprit medications where clinically possible:
+<strong>phosphate binders, oral iron, potassium binders, diuretics, opioids, antihistamines, psychotropics, calcium channel blockers.</strong>
+</div>
+
+<div class="btn-group">
+<button class="btn btn-secondary" onclick="goToStep(0)">← Back</button>
+<button class="btn btn-primary" onclick="goToStep(2)">Next: First-Line Laxatives →</button>
+</div>
+</div>
+</div>
+
+<!-- STEP 2: First-Line Pharmacologic -->
+<div class="step-content" id="step2">
+<div class="card">
+<h2>💊 Step 2 — First-Line Laxatives</h2>
+<div class="alert alert-success">
+<strong>Considered safe in ESRD at unchanged doses</strong> — bisacodyl, docusate (sodium), senna, lactulose, and macrogols/PEG.
+</div>
+
+<table class="drug-table">
+<thead>
+<tr>
+<th>Agent</th>
+<th>Class</th>
+<th>Starting Dose</th>
+<th>Onset</th>
+<th>Renal Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Lactulose</strong></td>
+<td>Osmotic</td>
+<td>15–30 mL PO daily or BID; titrate to effect</td>
+<td>24–48 h</td>
+<td><span class="badge badge-safe">Preferred</span></td>
+</tr>
+<tr>
+<td><strong>PEG 3350</strong><br><small>(without electrolytes)</small></td>
+<td>Osmotic</td>
+<td>17 g PO daily; may divide doses</td>
+<td>48–96 h</td>
+<td><span class="badge badge-caution">Use with caution*</span></td>
+</tr>
+<tr>
+<td><strong>Docusate sodium</strong></td>
+<td>Stool softener</td>
+<td>100–200 mg PO daily (up to 300 mg/day)</td>
+<td>12–72 h</td>
+<td><span class="badge badge-safe">Safe</span></td>
+</tr>
+<tr>
+<td><strong>Senna glycosides</strong></td>
+<td>Stimulant</td>
+<td>8.6–17.2 mg PO at bedtime PRN</td>
+<td>6–12 h</td>
+<td><span class="badge badge-safe">Safe</span></td>
+</tr>
+<tr>
+<td><strong>Bisacodyl</strong></td>
+<td>Stimulant</td>
+<td>5–10 mg PO daily PRN</td>
+<td>6–12 h</td>
+<td><span class="badge badge-safe">Safe</span></td>
+</tr>
+</tbody>
+</table>
+
+<div class="alert alert-warning">
+<strong>*PEG caution:</strong> Should be used with caution because of the water volume required with intake. The American Gastroenterological Association recommends avoiding PEG without direct physician supervision due to risk of fluid and electrolyte disturbances. <strong>Lactulose is the most frequently prescribed agent in advanced CKD/ESRD</strong> and is relatively safe; it may also favorably modulate gut microbiota and suppress uremic toxins.
+</div>
+
+<div class="alert alert-danger">
+<strong>🚫 Do NOT use in renal impairment:</strong>
+<ul style="margin-top:0.3rem;">
+<li><strong>Magnesium-containing laxatives</strong> (magnesium hydroxide/citrate) — risk of <strong>hypermagnesemia</strong>.</li>
+<li><strong>Phosphate-containing laxatives</strong> (sodium phosphate) — risk of <strong>acute phosphate nephropathy</strong> and <strong>hyperphosphatemia</strong>.</li>
+<li><strong>Bulk-forming agents</strong> (psyllium, methylcellulose, ispaghula husk) — often poorly tolerated due to fluid restriction; polycarbophil adds calcium burden.</li>
+</ul>
+</div>
+
+<h3>Maintenance Strategy</h3>
+<ul>
+<li>For chronic constipation, consider <strong>scheduled maintenance therapy</strong> with regular lactulose or PEG 3350 (± docusate only if hard stool).</li>
+<li>Titrate the scheduled laxative regimen to achieve a regular BM pattern of <strong>q1–2 days</strong>.</li>
+<li>If no BM after 3 days on first-line therapy → proceed to Step 3.</li>
+</ul>
+
+<div class="btn-group">
+<button class="btn btn-secondary" onclick="goToStep(1)">← Back</button>
+<button class="btn btn-primary" onclick="goToStep(3)">Next: Second-Line →</button>
+</div>
+</div>
+</div>
+
+<!-- STEP 3: Second-Line / Refractory -->
+<div class="step-content" id="step3">
+<div class="card">
+<h2>🔬 Step 3 — Second-Line & Refractory Options</h2>
+<p style="font-size:0.85rem; color:var(--text-light); margin-bottom:0.75rem;">
+For patients not responding to first-line laxatives, or those with concurrent hyperphosphatemia.
+</p>
+
+<h3>Guanylate Cyclase-C Agonists</h3>
+<ul>
+<li><strong>Linaclotide</strong> — 72–145 μg PO daily. Very limited systemic absorption; appears safe in CKD.</li>
+<li><strong>Plecanatide</strong> — 3 mg PO daily. Very limited systemic absorption; appears safe in CKD.</li>
+</ul>
+
+<h3>Chloride Channel Activator</h3>
+<ul>
+<li><strong>Lubiprostone</strong> — 24 μg PO BID. Has shown reno-protective signals.</li>
+</ul>
+
+<h3>5-HT<sub>4</sub> Agonist</h3>
+<ul>
+<li><strong>Prucalopride</strong> — improves bowel function when conventional laxatives are inadequate.
+<div class="alert alert-warning" style="margin-top:0.4rem;">
+<strong>Dose reduction required in CKD:</strong> Reduce to <strong>1 mg once daily</strong> (instead of standard 2 mg).
+</div>
+</li>
+</ul>
+
+<h3>Dual-Benefit Agent (Hyperphosphatemia + Constipation)</h3>
+<div class="alert alert-success">
+<strong>Tenapanor</strong> — NHE3 inhibitor; reduces intestinal phosphate and sodium absorption, offering added benefit in CKD patients with concurrent hyperphosphatemia and constipation.
+</div>
+<table class="drug-table">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>US FDA Dosing</strong></td>
+<td>30 mg PO twice daily, taken just prior to morning and evening meals. Adjust based on serum phosphorus and GI tolerability. Do not take right before hemodialysis.</td>
+</tr>
+<tr>
+<td><strong>Japanese Dosing</strong></td>
+<td>Start 5 mg BID; titrate to 10, 20, or 30 mg BID at ≥1 week intervals based on response.</td>
+</tr>
+<tr>
+<td><strong>Key Evidence</strong></td>
+<td>Significantly increases weekly stool frequency (4.7 → 8.2 in those with ≤6 stools/week) and improves BSFS scores (2.7 → 4.0). Laxative use decreased from 58.2% to 35.6% at week 23 in one RCT.</td>
+</tr>
+<tr>
+<td><strong>Adverse Effect</strong></td>
+<td><strong>Diarrhea</strong> is primary adverse effect; may require discontinuation. Gradual dose titration may help mitigate.</td>
+</tr>
+<tr>
+<td><strong>Additional Benefit</strong></td>
+<td>Reduces phosphate binder pill burden; lanthanum carbonate prescriptions decreased significantly in tenapanor groups.</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Rectal Therapies (PRN Only)</h3>
+<ul>
+<li><strong>Glycerin or bisacodyl suppository</strong> — 1 suppository PR PRN (onset 15–60 min).</li>
+<li><strong>Microlax enema</strong> — onset 2–15 min. <strong>Do NOT use Fleet enema</strong> (phosphate-containing).</li>
+<li>Not recommended for chronic use.</li>
+</ul>
+
+<div class="alert alert-danger">
+<strong>If no BM for ≥7 days:</strong> Rule out <strong>fecal impaction</strong> and <strong>bowel obstruction</strong> before escalating therapy. Consider manual disimpaction if indicated.
+</div>
+
+<div class="btn-group">
+<button class="btn btn-secondary" onclick="goToStep(2)">← Back</button>
+<button class="btn btn-primary" onclick="goToStep(4)">Next: Special Populations →</button>
+</div>
+</div>
+</div>
+
+<!-- STEP 4: Special Populations -->
+<div class="step-content" id="step4">
+<div class="card">
+<h2>👥 Step 4 — Special Population Nuances</h2>
+
+<div class="collapsible-header open" onclick="toggleCollapsible(this)">
+<h3>🔄 Peritoneal Dialysis (PD)</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="collapsible-body open">
+<div class="alert alert-danger">
+<strong>Critical:</strong> Constipation in PD can cause <strong>catheter migration</strong> and <strong>drainage failure</strong>. Laxatives are often used chronically and proactively.
+</div>
+<ul>
+<li><strong>Senna glycosides</strong> and <strong>bisacodyl</strong> may be necessary as initial therapy in PD patients.</li>
+<li>Synbiotic supplementation (fructo-oligosaccharides + <em>Lactobacillus</em> strains + <em>Saccharomyces boulardii</em>) has been shown to relieve chronic constipation and reduce laxative use in PD patients (36.8% suspended laxatives, 42.1% reduced dose).</li>
+<li>Fiber supplementation (e.g., fructo-oligosaccharides) should be considered in PD patients with low fiber intake or constipation not resolving with dietary measures alone.</li>
+<li>Tenapanor may be a useful agent in PD patients for both phosphate reduction and constipation management.</li>
+</ul>
+</div>
+
+<div class="collapsible-header" onclick="toggleCollapsible(this)">
+<h3>🫀 Kidney Transplant Recipients</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="collapsible-body">
+<div class="alert alert-warning">
+<strong>Diarrhea</strong> (commonly from mycophenolate) is more problematic than constipation in transplant recipients.
+</div>
+<ul>
+<li>If constipation occurs: <strong>docusate 200 mg PO BID</strong>. If no BM after 48 h, add <strong>sennosides 24 mg PO BID</strong> or <strong>PEG 3350 17 g PO daily</strong>.</li>
+<li>If no BM after 72 h, continue sennosides or PEG 3350 and add <strong>bisacodyl suppository 10 mg PR</strong> or <strong>glycerin suppository PR</strong>.</li>
+<li>Review medications — tacrolimus, mycophenolate, and corticosteroids can all affect GI motility.</li>
+</ul>
+</div>
+
+<div class="collapsible-header" onclick="toggleCollapsible(this)">
+<h3>🕊️ Advanced / Palliative Renal Disease</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="collapsible-body">
+<ul>
+<li><strong>Fentanyl</strong> causes less constipation than other opioids — preferred if opioid therapy is necessary.</li>
+<li>Focus on comfort and quality of life; aggressive bowel regimens may be appropriate.</li>
+<li>Consider <strong>methylnaltrexone</strong> (peripheral opioid antagonist) if opioid-induced constipation is refractory, though renal dosing data are limited.</li>
+</ul>
+</div>
+
+<div class="collapsible-header" onclick="toggleCollapsible(this)">
+<h3>⚠️ Hyperkalemia Concern</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="collapsible-body">
+<ul>
+<li>Constipation can <strong>worsen hyperkalemia</strong> by increasing intestinal potassium absorption time.</li>
+<li>Regular bowel movements (every 1–2 days) help minimize hyperkalemia risk.</li>
+<li>If potassium binders (e.g., patiromer, sodium zirconium cyclosilicate) are used, they may themselves cause constipation — monitor and adjust.</li>
+</ul>
+</div>
+
+<div class="btn-group">
+<button class="btn btn-secondary" onclick="goToStep(3)">← Back</button>
+<button class="btn btn-primary" onclick="goToStep(5)">Next: Summary →</button>
+</div>
+</div>
+</div>
+
+<!-- STEP 5: Summary -->
+<div class="step-content" id="step5">
+<div class="card">
+<h2>📄 Step 5 — Personalized Summary</h2>
+<div id="summaryContent">
+<!-- Populated by JS -->
+</div>
+<div class="btn-group" style="margin-top:1.5rem;">
+<button class="btn btn-secondary" onclick="goToStep(4)">← Back</button>
+<button class="btn btn-primary" onclick="window.print()">🖨️ Print Summary</button>
+</div>
+<button class="btn btn-secondary" style="margin-top:0.5rem;" onclick="resetApp()">🔄 Start New Assessment</button>
+</div>
+</div>
+
+</div>
+
+<footer class="app-footer">
+<p><strong>Disclaimer:</strong> This tool is for educational and clinical decision support purposes only. It does not replace clinical judgment. Always individualize therapy based on patient-specific factors and institutional protocols.</p>
+<p style="margin-top:0.4rem;">Based on: Cha RR et al. <em>J Neurogastroenterol Motil.</em> 2023;29(4):428-435; BC Renal Agency; KDIGO; and real-world evidence.</p>
+</footer>
+
+<script>
+// State
+let currentStep = 0;
+let patientData = {
+ckdStage: '',
+bristol: '',
+bmFreq: '',
+meds: [],
+comorbidities: []
+};
+
+// Bristol scale selection
+document.querySelectorAll('.bristol-item').forEach(item => {
+item.addEventListener('click', function() {
+document.querySelectorAll('.bristol-item').forEach(i => i.classList.remove('selected'));
+this.classList.add('selected');
+document.getElementById('bristolType').value = this.dataset.bs;
+});
+});
+
+// Navigation
+function goToStep(step) {
+currentStep = step;
+document.querySelectorAll('.step-content').forEach((el, i) => {
+el.classList.toggle('active', i === step);
+});
+document.querySelectorAll('.progress-step').forEach((el, i) => {
+el.classList.toggle('active', i === step);
+el.classList.toggle('completed', i < step);
+});
+window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Progress bar click navigation
+document.querySelectorAll('.progress-step').forEach(step => {
+step.addEventListener('click', function() {
+const stepNum = parseInt(this.dataset.step);
+if (stepNum <= currentStep) goToStep(stepNum);
+});
+});
+
+// Collapsible
+function toggleCollapsible(header) {
+header.classList.toggle('open');
+const body = header.nextElementSibling;
+body.classList.toggle('open');
+}
+
+// Run Assessment
+function runAssessment() {
+// Collect data
+patientData.ckdStage = document.getElementById('ckdStage').value;
+patientData.bristol = document.getElementById('bristolType').value;
+patientData.bmFreq = document.getElementById('bmFreq').value;
+patientData.meds = Array.from(document.querySelectorAll('.med-check:checked')).map(cb => cb.value);
+patientData.comorbidities = Array.from(document.querySelectorAll('.comorb-check:checked')).map(cb => cb.value);
+
+// Validation
+if (!patientData.ckdStage) {
+alert('Please select CKD stage / dialysis status.');
+return;
+}
+if (!patientData.bristol && !patientData.bmFreq) {
+alert('Please indicate either stool type (Bristol scale) or bowel movement frequency.');
+return;
+}
+
+// Generate summary
+generateSummary();
+
+// Navigate to Step 1 (Non-Pharmacologic)
+goToStep(1);
+}
+
+// Generate Summary
+function generateSummary() {
+const summaryDiv = document.getElementById('summaryContent');
+
+// Determine constipation severity
+const bristol = parseInt(patientData.bristol) || 0;
+let severity = 'Mild';
+let severityClass = 'alert-info';
+
+if (bristol >= 1 && bristol <= 2 || patientData.bmFreq === 'every5' || patientData.bmFreq === 'less7') {
+severity = 'Moderate to Severe';
+severityClass = 'alert-warning';
+}
+if (patientData.bmFreq === 'less7') {
+severity = 'Severe — Urgent Assessment Required';
+severityClass = 'alert-danger';
+}
+
+// Stage label
+const stageLabels = {
+'ckd3': 'CKD Stage 3 (eGFR 30–59)',
+'ckd4': 'CKD Stage 4 (eGFR 15–29)',
+'ckd5': 'CKD Stage 5 (eGFR <15, not on dialysis)',
+'hd': 'Hemodialysis (HD)',
+'pd': 'Peritoneal Dialysis (PD)',
+'transplant': 'Kidney Transplant Recipient'
+};
+
+// Bristol descriptions
+const bristolDesc = {
+'1': 'Type 1 — Separate hard lumps',
+'2': 'Type 2 — Sausage-shaped, lumpy',
+'3': 'Type 3 — Like a sausage with cracks',
+'4': 'Type 4 — Smooth & soft (normal)',
+'5': 'Type 5 — Soft blobs',
+'6': 'Type 6 — Fluffy, mushy',
+'7': 'Type 7 — Watery, no solids'
+};
+
+// Frequency labels
+const freqLabels = {
+'daily': 'Daily or every 1–2 days (normal)',
+'every3': 'Every 3–4 days',
+'every5': 'Every 5–6 days',
+'less7': 'Less than once per week / no BM >7 days'
+};
+
+// Med labels
+const medLabels = {
+'phosphateBinders': 'Phosphate binders',
+'oralIron': 'Oral iron',
+'potassiumBinders': 'Potassium binders',
+'diuretics': 'Diuretics',
+'opioids': 'Opioids',
+'antihistamines': 'Antihistamines',
+'psychotropics': 'Psychotropics',
+'calciumChannel': 'Calcium channel blockers'
+};
+
+// Comorbidity labels
+const comorbLabels = {
+'hyperkalemia': 'Hyperkalemia',
+'hyperphosphatemia': 'Hyperphosphatemia',
+'fluidRestriction': 'Fluid restriction',
+'diabetes': 'Diabetes mellitus',
+'gastroparesis': 'Gastroparesis'
+};
+
+// Build HTML
+let html = '';
+
+// Alert for severe
+if (patientData.bmFreq === 'less7') {
+html += `<div class="alert alert-danger">
+<strong>⚠️ URGENT:</strong> No bowel movement >7 days. Rule out fecal impaction and bowel obstruction before escalating laxative therapy.
+</div>`;
+}
+
+// Patient profile
+html += `<h3>Patient Profile</h3>
+<div class="summary-grid">
+<div class="summary-item">
+<strong>Renal Status</strong>
+${stageLabels[patientData.ckdStage] || 'Not specified'}
+</div>
+<div class="summary-item">
+<strong>Stool Type (Bristol)</strong>
+${bristolDesc[patientData.bristol] || 'Not assessed'}
+</div>
+<div class="summary-item">
+<strong>BM Frequency</strong>
+${freqLabels[patientData.bmFreq] || 'Not specified'}
+</div>
+<div class="summary-item">
+<strong>Severity</strong>
+<span class="${severityClass}" style="display:inline-block; padding:0.1rem 0.4rem; border-radius:4px; font-size:0.75rem; font-weight:700;">
+${severity}
+</span>
+</div>
+</div>`;
+
+// Contributing meds
+if (patientData.meds.length > 0) {
+html += `<h3>Contributing Medications</h3><ul>`;
+patientData.meds.forEach(m => {
+html += `<li>${medLabels[m] || m} — consider minimizing or substituting if clinically feasible</li>`;
+});
+html += `</ul>`;
+}
+
+// Comorbidities
+if (patientData.comorbidities.length > 0) {
+html += `<h3>Relevant Comorbidities</h3><ul>`;
+patientData.comorbidities.forEach(c => {
+html += `<li>${comorbLabels[c] || c}</li>`;
+});
+html += `</ul>`;
+}
+
+// Recommended protocol
+html += `<h3>Recommended Stepwise Protocol</h3>
+<ol style="padding-left:1.2rem;">
+<li style="margin-bottom:0.6rem;">
+<strong>Non-pharmacologic measures:</strong>
+Maximize tolerated dietary fiber (20–38 g/day within potassium/phosphorus limits),
+optimize fluid within restriction, encourage physical activity (30 min/day),
+establish regular bowel habits, and review constipating medications.
+</li>`;
+
+// First-line recommendations based on severity
+if (severity === 'Mild') {
+html += `<li style="margin-bottom:0.6rem;">
+<strong>First-line pharmacologic (if non-Rx insufficient):</strong>
+Consider <strong>lactulose 15–30 mL PO daily</strong> (preferred in ESRD)
+or <strong>PEG 3350 17 g PO daily</strong> (use with caution due to fluid volume).
+Add <strong>docusate 100–200 mg PO daily</strong> only if hard stool.
+</li>`;
+} else {
+html += `<li style="margin-bottom:0.6rem;">
+<strong>First-line pharmacologic:</strong>
+Start <strong>lactulose 15–30 mL PO daily to BID</strong> (titrate to effect).
+May add <strong>senna 8.6–17.2 mg PO at bedtime PRN</strong> or
+<strong>bisacodyl 5–10 mg PO daily PRN</strong> for rescue.
+Avoid magnesium- and phosphate-containing laxatives.
+</li>`;
+}
+
+// Second-line
+html += `<li style="margin-bottom:0.6rem;">
+<strong>Second-line (if inadequate response):</strong>
+Consider <strong>linaclotide 72–145 μg daily</strong>,
+<strong>plecanatide 3 mg daily</strong>,
+<strong>lubiprostone 24 μg BID</strong>, or
+<strong>prucalopride 1 mg daily</strong> (dose-reduced for CKD).
+</li>`;
+
+// Tenapanor if hyperphosphatemia + constipation
+if (patientData.comorbidities.includes('hyperphosphatemia')) {
+html += `<li style="margin-bottom:0.6rem;">
+<strong>Dual-benefit option (hyperphosphatemia + constipation):</strong>
+<strong>Tenapanor</strong> — FDA: 30 mg PO BID before meals;
+Japan: start 5 mg BID, titrate to 10–30 mg BID.
+Reduces phosphate and improves bowel movements.
+Monitor for diarrhea.
+</li>`;
+}
+
+// Special population notes
+if (patientData.ckdStage === 'pd') {
+html += `<li style="margin-bottom:0.6rem;">
+<strong>PD-specific:</strong>
+Constipation can cause catheter migration and drainage failure.
+Laxatives are often used chronically and proactively.
+Senna and bisacodyl may be necessary as initial therapy.
+Consider synbiotic supplementation.
+</li>`;
+} else if (patientData.ckdStage === 'transplant') {
+html += `<li style="margin-bottom:0.6rem;">
+<strong>Transplant-specific:</strong>
+Diarrhea (mycophenolate) is more common than constipation.
+If constipation: docusate 200 mg BID → add sennosides 24 mg BID or PEG 3350 17 g daily → add bisacodyl suppository PRN.
+</li>`;
+}
+
+// Rescue / escalation
+html += `<li style="margin-bottom:0.6rem;">
+<strong>Rescue / escalation:</strong>
+If no BM after 3 days on first-line → escalate to second-line.
+If no BM for ≥7 days → rule out fecal impaction/obstruction.
+Rectal therapies (glycerin/bisacodyl suppository, Microlax enema) PRN only.
+<strong>Do NOT use Fleet enema</strong> (phosphate-containing).
+</li>`;
+
+html += `</ol>`;
+
+// Maintenance
+html += `<h3>Maintenance Goals</h3>
+<ul>
+<li>Target <strong>bowel movement every 1–2 days</strong> (Bristol Type 3–4).</li>
+<li>Titrate scheduled laxative regimen to achieve this pattern.</li>
+<li>Monitor for hyperkalemia — constipation worsens potassium absorption.</li>
+<li>Reassess at each clinic visit or dialysis session.</li>
+</ul>`;
+
+// Safety alerts
+html += `<div class="alert alert-danger" style="margin-top:1rem;">
+<strong>🚫 Contraindicated in CKD:</strong>
+Magnesium-containing laxatives (hypermagnesemia risk),
+phosphate-containing laxatives (acute phosphate nephropathy),
+bulk-forming agents (fluid restriction intolerance; polycarbophil adds calcium).
+</div>`;
+
+summaryDiv.innerHTML = html;
+}
+
+// Reset
+function resetApp() {
+document.getElementById('ckdStage').value = '';
+document.getElementById('bristolType').value = '';
+document.getElementById('bmFreq').value = '';
+document.querySelectorAll('.med-check').forEach(cb => cb.checked = false);
+document.querySelectorAll('.comorb-check').forEach(cb => cb.checked = false);
+document.querySelectorAll('.bristol-item').forEach(i => i.classList.remove('selected'));
+goToStep(0);
+}
+
+// Initialize
+goToStep(0);
+</script>
+
+</body>
+</html>
+
